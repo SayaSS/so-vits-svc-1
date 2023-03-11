@@ -8,6 +8,7 @@ import json
 import argparse
 import itertools
 import math
+from tqdm import tqdm
 import torch
 from torch import nn, optim
 from torch.nn import functional as F
@@ -138,7 +139,7 @@ def train_and_evaluate(rank, epoch, hps, nets, optims, schedulers, scaler, loade
 
     net_g.train()
     net_d.train()
-    for batch_idx, items in enumerate(train_loader):
+    for batch_idx, items in enumerate(tqdm(train_loader)):
         c, f0, spec, y, spk, lengths, uv = items
         g = spk.cuda(rank, non_blocking=True)
         spec, y = spec.cuda(rank, non_blocking=True), y.cuda(rank, non_blocking=True)
